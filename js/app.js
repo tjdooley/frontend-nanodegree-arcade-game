@@ -65,7 +65,9 @@ var Player = function(x, y) {
 }
 
 Player.prototype.update = function(dt) {
-
+	// if (player.y === -10) {
+	// 	player.reset();
+	// }
 }
 
 // Update the player's position, required method for game
@@ -87,6 +89,11 @@ Player.prototype.handleInput = function(key) {
         default:
             break;
         }
+}
+
+Player.prototype.reset = function() {
+	this.x = playerStartPos.x;
+	this.y = playerStartPos.y;
 }
 
 // Draw the player on the screen, required method for game
@@ -114,7 +121,7 @@ function getRandomInt(min, max) {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var allEnemies = [new Enemy(-100, enemyYPos[getRandomInt(0, 3)])];
-var player = new Player(200, 400);
+var player = new Player(playerStartPos.x, playerStartPos.y);
 
 
 // This listens for key presses and sends the keys to your
