@@ -68,6 +68,8 @@ var Player = function(x, y) {
     this.y = y;
     this.width = 70;
     this.height = 70;
+    this.leftBorder = 20;
+    this.rightBorder = this.leftBorder + this.width;
 }
 
 Player.prototype.update = function(dt) {

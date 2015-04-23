@@ -86,7 +86,10 @@ var Engine = (function(global) {
     //function to check collissions.  Needs some refinement.
     function checkCollisions() {
         allEnemies.forEach(function(enemy) {
-            if (Math.abs(enemy.y - player.y) < 30 && Math.abs(enemy.x - player.x) < 42) {
+            if (Math.abs(enemy.y - player.y) < 30 && 
+                ((player.x + player.leftBorder > enemy.x && player.x + player.leftBorder < enemy.x + enemy.width)
+                    || (player.x + player.rightBorder > enemy.x && player.x + player.rightBorder < enemy.x + enemy.width)
+                )) {
                 player.reset();
             }
         });
