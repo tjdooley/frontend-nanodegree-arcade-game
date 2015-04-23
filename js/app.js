@@ -4,6 +4,8 @@ var playerStartPos = {
 	y:400
 };
 var enemyYPos = [62, 144, 226];
+var enemyCount = 3;
+
 var rightBoundary = 700;
 
 var playerXMove = 101;
@@ -20,7 +22,9 @@ var Enemy = function(x, y) {
     this.sprite = 'images/enemy-bug.png';
     this.x = x;
     this.y = y;
-    this.speed = getRandomArbitrary(1, 3);
+    this.width = 101;
+    this.height = 70;
+    this.speed = getRandomArbitrary(3, 5);
 }
 
 // Update the enemy's position, required method for game
@@ -62,12 +66,14 @@ var Player = function(x, y) {
     this.sprite = 'images/char-boy.png';
     this.x = x;
     this.y = y;
+    this.width = 70;
+    this.height = 70;
 }
 
 Player.prototype.update = function(dt) {
-	// if (player.y === -10) {
-	// 	player.reset();
-	// }
+	if (player.y === -10) {
+		player.reset();
+	}
 }
 
 // Update the player's position, required method for game
@@ -120,7 +126,10 @@ function getRandomInt(min, max) {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-var allEnemies = [new Enemy(-100, enemyYPos[getRandomInt(0, 3)])];
+var allEnemies = [];
+for (i = 0; i < enemyCount; i++) {
+  allEnemies.push(new Enemy(-100, enemyYPos[getRandomInt(0, 3)]));
+}
 var player = new Player(playerStartPos.x, playerStartPos.y);
 
 
