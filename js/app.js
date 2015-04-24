@@ -1,7 +1,8 @@
 //GLobal stuff
-var playerStartPos = {
+var playerConst = {
 	x: 200,
-	y:400
+	y:400,
+	sprites: ['images/char-boy.png', 'images/char-cat-girl.png', 'images/char-horn-girl.png', 'images/char-pink-girl.png', 'images/char-princess-girl.png']
 };
 var enemyYPos = [62, 144, 226];
 var enemyCount = 3;
@@ -57,15 +58,16 @@ Enemy.prototype.render = function() {
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
-var Player = function(x, y) {
+var Player = function() {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
-    this.sprite = 'images/char-boy.png';
-    this.x = x;
-    this.y = y;
+    this.spriteIndex = 0;
+    this.sprite = playerConst.sprites[this.spriteIndex];
+    this.x = playerConst.x;
+    this.y = playerConst.y;
     this.width = 70;
     this.height = 70;
     this.leftBorder = 20;
@@ -94,14 +96,21 @@ Player.prototype.handleInput = function(key) {
         case 'down':
             this.y + playerYMove > 400 ? this.y = 400 : this.y = this.y + playerYMove
             break;
+        case 'c' :
+        	this.spriteIndex++;
+        	if (this.spriteIndex >= playerConst.sprites.length) {
+        		this.spriteIndex = 0;
+        	}
+        	this.sprite = playerConst.sprites[this.spriteIndex];
+        	break;
         default:
             break;
         }
 }
 
 Player.prototype.reset = function() {
-	this.x = playerStartPos.x;
-	this.y = playerStartPos.y;
+	this.x = playerConst.x;
+	this.y = playerConst.y;
 }
 
 // Draw the player on the screen, required method for game
@@ -132,7 +141,7 @@ var allEnemies = [];
 for (i = 0; i < enemyCount; i++) {
   allEnemies.push(new Enemy(-100, enemyYPos[getRandomInt(0, 3)]));
 }
-var player = new Player(playerStartPos.x, playerStartPos.y);
+var player = new Player();
 
 
 // This listens for key presses and sends the keys to your
@@ -142,7 +151,8 @@ document.addEventListener('keyup', function(e) {
         37: 'left',
         38: 'up',
         39: 'right',
-        40: 'down'
+        40: 'down',
+        67: 'c'
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
