@@ -1,4 +1,6 @@
 //GLobal stuff
+var menu;
+var gameState; // 1 if playing 0 if game over
 var playerConst = {
 	x: 200,
 	y:400,
@@ -11,6 +13,38 @@ var rightBoundary = 700;
 
 var playerXMove = 101;
 var playerYMove = 82;
+
+var Menu = function(){
+    this.x = 0;
+    this.y = 100;
+    this.width = 400;
+    this.height = 400;
+    this.sprite = playerConst.sprites[0];
+};
+
+Menu.prototype.render = function(){
+    ctx.textAlign = "center";
+    ctx.rect(20,100,ctx.canvas.width-40,ctx.canvas.height - 150);
+    ctx.fillStyle = "red";
+    ctx.fill();
+    ctx.fillStyle = "white";
+    ctx.font = "bold 48px";
+
+    if(gameState === 'menu') {
+
+        ctx.drawImage(Resources.get(this.sprite), 200, 200);
+
+        ctx.fillText('Frogger Game', ctx.canvas.width / 2, ctx.canvas.height / 5);
+        ctx.font = "24px sans-serif";
+        ctx.fillText('Press c to choose a different character.', ctx.canvas.width / 2, ctx.canvas.height / 6 * 5);
+    }
+
+    if(gameState === 'lose'){
+        ctx.fillText('GAME OVER', ctx.canvas.width/2, ctx.canvas.height/5);
+    }
+    ctx.font = "24px ";
+    ctx.fillText('Press Space to start game.', ctx.canvas.width/2, ctx.canvas.height/6*5 + 30);
+};
 
 //ENEMIES*********************************************************************************************
 // Enemies our player must avoid
@@ -142,6 +176,11 @@ for (i = 0; i < enemyCount; i++) {
   allEnemies.push(new Enemy(-100, enemyYPos[getRandomInt(0, 3)]));
 }
 var player = new Player();
+
+var initGraphics = function(){
+    gameState = 'menu';
+    menu = new Menu();
+};
 
 
 // This listens for key presses and sends the keys to your
