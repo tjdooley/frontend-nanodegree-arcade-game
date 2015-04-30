@@ -42,6 +42,8 @@ var Engine = (function(global) {
         var now = Date.now(),
             dt = (now - lastTime) / 1000.0;
 
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
          */
@@ -92,6 +94,10 @@ var Engine = (function(global) {
                     || (player.x + player.rightBorder > enemy.x && player.x + player.rightBorder < enemy.x + enemy.width)
                 )) {
                 player.reset();
+                statusBar.lives--;
+                if(statusBar.lives === 0){
+                    gameState = 'lose';
+                }
             }
         });
     }
@@ -166,8 +172,8 @@ var Engine = (function(global) {
                 enemy.render();
             });
 
-
             player.render();
+            statusBar.render();
         }
         else {
             menu.render();
@@ -195,7 +201,8 @@ var Engine = (function(global) {
         'images/char-cat-girl.png', 
         'images/char-horn-girl.png', 
         'images/char-pink-girl.png', 
-        'images/char-princess-girl.png'
+        'images/char-princess-girl.png',
+        'images/Heart.png'
     ]);
     Resources.onReady(init);
 

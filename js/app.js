@@ -1,6 +1,7 @@
 //GLobal stuff
 var menu;
-var gameState; // 1 if playing 0 if game over
+var gameState;
+var statusBar;
 var playerConst = {
 	x: 200,
 	y:400,
@@ -19,6 +20,7 @@ var Menu = function(){
     this.y = 100;
     this.width = 400;
     this.height = 400;
+    this.spriteIndex = 0;
     this.sprite = playerConst.sprites[0];
 };
 
@@ -44,6 +46,50 @@ Menu.prototype.render = function(){
     }
     ctx.font = "24px ";
     ctx.fillText('Press Space to start game.', ctx.canvas.width/2, ctx.canvas.height/6*5 + 30);
+};
+
+Menu.prototype.handleInput = function(key){
+    switch(key){
+        case 'c' :
+        	this.spriteIndex++;
+        	if (this.spriteIndex >= playerConst.sprites.length) {
+        		this.spriteIndex = 0;
+        	}
+        	this.sprite = playerConst.sprites[this.spriteIndex];
+        	break;
+        case 'space':
+            if(gameState === 'menu') {
+                gameState = 'playing';
+                startGame();
+            }
+            else if(gameState === 'lose'){
+                gameState = 'restart';
+            }
+            else if(gameState === 'win'){
+                gameState = 'continue';
+            }
+            break;
+
+        default:
+            break;
+    }
+};
+
+//Status bar
+var StatusBar = function() {
+	this.x = 5;
+	this.y = -10;
+	this.lifeTotal = 3;
+	this.lives = 3
+	this.sprite = 'images/Heart.png';
+	this.width = Resources.get(this.sprite).width * .4;
+    this.height = Resources.get(this.sprite).height * .4;
+}
+
+StatusBar.prototype.render = function(){
+    for(i = 0; i < this.lives; i++){
+        ctx.drawImage(Resources.get(this.sprite), this.x + i*this.width, this.y, this.width, this.height);
+    }
 };
 
 //ENEMIES*********************************************************************************************
@@ -98,8 +144,7 @@ var Player = function() {
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
-    this.spriteIndex = 0;
-    this.sprite = playerConst.sprites[this.spriteIndex];
+    this.sprite = playerConst.sprites[0];
     this.x = playerConst.x;
     this.y = playerConst.y;
     this.width = 70;
@@ -130,13 +175,6 @@ Player.prototype.handleInput = function(key) {
         case 'down':
             this.y + playerYMove > 400 ? this.y = 400 : this.y = this.y + playerYMove
             break;
-        case 'c' :
-        	this.spriteIndex++;
-        	if (this.spriteIndex >= playerConst.sprites.length) {
-        		this.spriteIndex = 0;
-        	}
-        	this.sprite = playerConst.sprites[this.spriteIndex];
-        	break;
         default:
             break;
         }
@@ -168,14 +206,21 @@ function getRandomInt(min, max) {
 
 //END UTILITY STUFF**************************************************************************************
 
+
+var allEnemies = [];
+var player = new Player();
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-var allEnemies = [];
-for (i = 0; i < enemyCount; i++) {
-  allEnemies.push(new Enemy(-100, enemyYPos[getRandomInt(0, 3)]));
-}
-var player = new Player();
+var startGame = function() {
+	allEnemies = [];
+	for (i = 0; i < enemyCount; i++) {
+  		allEnemies.push(new Enemy(-100, enemyYPos[getRandomInt(0, 3)]));
+	}
+	player = new Player();
+	player.sprite = playerConst.sprites[menu.spriteIndex];
+	statusBar = new StatusBar();
+};
 
 var initGraphics = function(){
     gameState = 'menu';
@@ -187,6 +232,7 @@ var initGraphics = function(){
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
+    	32: 'space',
         37: 'left',
         38: 'up',
         39: 'right',
@@ -194,5 +240,10 @@ document.addEventListener('keyup', function(e) {
         67: 'c'
     };
 
-    player.handleInput(allowedKeys[e.keyCode]);
+    if(gameState === 'playing'){
+        player.handleInput(allowedKeys[e.keyCode]);
+    }
+    else {
+        menu.handleInput(allowedKeys[e.keyCode]);
+    }
 });
