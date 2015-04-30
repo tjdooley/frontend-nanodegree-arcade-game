@@ -45,7 +45,7 @@ Menu.prototype.render = function(){
         ctx.fillText('GAME OVER', ctx.canvas.width/2, ctx.canvas.height/5);
     }
     ctx.font = "24px ";
-    ctx.fillText('Press Space to start game.', ctx.canvas.width/2, ctx.canvas.height/6*5 + 30);
+    ctx.fillText('Press Space to continue.', ctx.canvas.width/2, ctx.canvas.height/6*5 + 30);
 };
 
 Menu.prototype.handleInput = function(key){

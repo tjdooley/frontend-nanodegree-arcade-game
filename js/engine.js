@@ -82,8 +82,13 @@ var Engine = (function(global) {
      * on the entities themselves within your app.js file).
      */
     function update(dt) {
-        updateEntities(dt);
-        checkCollisions();
+        if(gameState === 'playing'){
+            updateEntities(dt);
+            checkCollisions();
+        }
+        else if(gameState === 'restart'){
+            init();
+        }
     }
 
     //function to check collissions.  Needs some refinement.
