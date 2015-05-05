@@ -15,17 +15,26 @@ var RIGHT_BOUNDARY = 700;
 var PLAYER_X_MOVE = 101;
 var PLAYER_Y_MOVE = 82;
 
+//ENTITY---------------------------------------------------------
+//Create a base object with properties that all game objects share
+//This is probably overkill since it's only a few properties, but was good practice
+var Entity = function(x, y, width, height, sprite) {
+	this.x = x;
+	this.y = y;
+	this.width = width;
+	this.height = height;
+	this.sprite = sprite;
+}
+//END ENTITY------------------------------------------------------
 
 //MENU------------------------------------------------------------
 //Display start/end game menu
 var Menu = function(){
-    this.x = 0;
-    this.y = 100;
-    this.width = 400;
-    this.height = 400;
+	Entity.call(this, 0, 100, 400, 400, PLAYER_CONSTANTS.sprites[0]);
     this.spriteIndex = 0;
-    this.sprite = PLAYER_CONSTANTS.sprites[0];
 };
+
+Menu.prototype = Object.create(Entity.prototype);
 
 //Render the menu
 Menu.prototype.render = function(){
@@ -90,15 +99,13 @@ Menu.prototype.handleInput = function(key){
 //STATUS BAR--------------------------------------------------------------------
 //Status bar displays number of lives and total score
 var StatusBar = function() {
-	this.x = 5;
-	this.y = -10;
+	Entity.call(this, 5, -10, Resources.get('images/Heart.png').width * .4, Resources.get('images/Heart.png').height * .4, 'images/Heart.png');
 	this.lifeTotal = 3;
 	this.lives = 3;
     this.score = 0;
-	this.sprite = 'images/Heart.png';
-	this.width = Resources.get(this.sprite).width * .4;
-    this.height = Resources.get(this.sprite).height * .4;
 }
+
+StatusBar.prototype = Object.create(Entity.prototype);
 
 //Render the number of lives (heart icon) and total score
 StatusBar.prototype.render = function(){
@@ -114,18 +121,11 @@ StatusBar.prototype.render = function(){
 //ENEMIES*********************************************************************************************
 // Enemies our player must avoid
 var Enemy = function(x, y) {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png';
-    this.x = x;
-    this.y = y;
-    this.width = 101;
-    this.height = 70;
+	Entity.call(this, x, y, 101, 70, 'images/enemy-bug.png');
     this.speed = getRandomArbitrary(3, 5);
 }
+
+Enemy.prototype = Object.create(Entity.prototype);
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -159,19 +159,13 @@ Enemy.prototype.render = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function() {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
-    this.sprite = PLAYER_CONSTANTS.sprites[0];
-    this.x = PLAYER_CONSTANTS.x;
-    this.y = PLAYER_CONSTANTS.y;
-    this.width = 70;
-    this.height = 70;
+	Entity.call(this, PLAYER_CONSTANTS.x, PLAYER_CONSTANTS.y, 70, 70, PLAYER_CONSTANTS.sprites[0]);
     this.leftBorder = 20;
     this.rightBorder = this.leftBorder + this.width;
 }
+
+
+Player.prototype = Object.create(Entity.prototype);
 
 //If the player reaches the end, update their score and reset them to the beginning
 Player.prototype.update = function(dt) {
