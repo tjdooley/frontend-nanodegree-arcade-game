@@ -42,6 +42,8 @@ var Engine = (function(global) {
         var now = Date.now(),
             dt = (now - lastTime) / 1000.0;
 
+        //Needed to clear the context during gameplay, otherwise heart icons
+        //weren't clearing when player lost a life
         ctx.clearRect(0,0,canvas.width,canvas.height);
 
         /* Call our update/render functions, pass along the time delta to
@@ -82,19 +84,21 @@ var Engine = (function(global) {
      * on the entities themselves within your app.js file).
      */
     function update(dt) {
+        //During game play, update the entities and check collisions
         if(gameState === 'playing'){
             updateEntities(dt);
             checkCollisions();
         }
         else if(gameState === 'restart'){
+            //reinitialize the game menu
             init();
         }
     }
 
-    //function to check collissions.  Needs some refinement.
+    //function to check collisions.  Update the player, status bar, and game state
     function checkCollisions() {
         allEnemies.forEach(function(enemy) {
-            if (Math.abs(enemy.y - player.y) < 30 && 
+            if (Math.abs(enemy.y - player.y) < 30 &&
                 ((player.x + player.leftBorder > enemy.x && player.x + player.leftBorder < enemy.x + enemy.width)
                     || (player.x + player.rightBorder > enemy.x && player.x + player.rightBorder < enemy.x + enemy.width)
                 )) {
@@ -170,7 +174,9 @@ var Engine = (function(global) {
      */
     function renderEntities() {
         /* Loop through all of the objects within the allEnemies array and call
-         * the render function you have defined.
+         * the render function you have defined.  Also render player and
+         * status bar.
+         * If the game state is not playing, render the menu.
          */
        if(gameState === 'playing') {
             allEnemies.forEach(function(enemy) {
@@ -203,9 +209,9 @@ var Engine = (function(global) {
         'images/grass-block.png',
         'images/enemy-bug.png',
         'images/char-boy.png',
-        'images/char-cat-girl.png', 
-        'images/char-horn-girl.png', 
-        'images/char-pink-girl.png', 
+        'images/char-cat-girl.png',
+        'images/char-horn-girl.png',
+        'images/char-pink-girl.png',
         'images/char-princess-girl.png',
         'images/Heart.png'
     ]);
