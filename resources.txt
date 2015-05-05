@@ -1,0 +1,8 @@
+Resources used
+---------------
+Udacity Javascript Style Guide
+Book - Javascript: the good parts
+http://www.w3schools.com/
+http://stackoverflow.com/
+
+I also drew a lot of ideas and code samples from other projects on GitHub.  But I made sure to understand any code I used and modified it to fit my overall design.  In particular, this was a very good repository.  https://github.com/mattpham/frontend-nanodegree-arcade-game
