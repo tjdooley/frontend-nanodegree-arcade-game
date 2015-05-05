@@ -1,12 +1,9 @@
 Front-end Nanodegree Arcade Game
 ===============================
 ## Source Code
-This repository was pulled from https://github.com/udacity/frontend-nanodegree-arcade-game
-## About
-This game is based on the Frogger Arcade game.
+This repository was forked from https://github.com/udacity/frontend-nanodegree-arcade-game
 ## Rules
 You are given 3 lives to score as many points as possible.  Points are scored by reaching the water.
-
 ## Controls
 ### Menu
 C - Select your character
